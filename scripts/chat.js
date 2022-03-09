@@ -1,6 +1,7 @@
-// setting up a real-time listener to get new chats
-// updating the username
-// updating the room
+// 1.  adding new chat documents
+// 2. setting up a real-time listener to get new chats
+// 3. updating the username
+// 4. updating the room
 
 // This class manages the chatroom data 
 class Chatroom {
@@ -9,7 +10,7 @@ class Chatroom {
         this.username = username;
         this.chats = db.collection('chats')
     }
-    // ===> adding new chat documents
+    // ===> (1)
     async addChat(message) {
         // format a chat object 
         const now = new Date();
@@ -23,8 +24,13 @@ class Chatroom {
         const response = await this.chats.add(chat);
         return response;
     }
+    // ===> (2)
     getChats(callback) {
         this.chats
+            // listen to documents with certain properties
+            .where('room', '==', this.room)
+            // order documents
+            .orderBy('created_at')
             .onSnapshot((snapshot) => {
                 snapshot.docChanges().forEach(change => {
                     if (change.type === 'added') {
@@ -36,9 +42,9 @@ class Chatroom {
     }
 }
 
-const chatroom = new Chatroom('gaming', 'olivia');
+const chatroom = new Chatroom('general', 'olivia');
 
-// callback function
+// (2) callback function
 chatroom.getChats((data) => {
     console.log(data)
 })
