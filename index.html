@@ -64,8 +64,27 @@
       </form>
     </div>
 
-    <script src="scrips/chat.js"></script>
-    <script src="scrips/ui.js"></script>
-    <script src="scrips/app.js"></script>
+    <body>
+        <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-firestore.js"></script>
+    
+        <script>
+          // Initialise Firebase
+          const config = {
+            apiKey: "AIzaSyBfCD1jZ6z4LsXqo3OcxaY_-RwSTjzXeTY",
+            authDomain: "js-real-time-chatroom.firebaseapp.com",
+            databaseURL: "https://js-real-time-chatroom.firebaseio.com",
+            projectId: "js-real-time-chatroom",
+            storageBucket: "js-real-time-chatroom.appspot.com",
+            messagingSenderId: "292575246838",
+          };
+    
+          firebase.initializeApp(config);
+          const db = firebase.firestore()
+        </script>
+
+    <script src="scripts/chat.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/app.js"></script>
   </body>
 </html>
