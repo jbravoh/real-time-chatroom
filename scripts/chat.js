@@ -1,4 +1,4 @@
-// 1.  adding new chat documents
+// 1. adding new chat documents
 // 2. setting up a real-time listener to get new chats
 // 3. updating the username
 // 4. updating the room
@@ -8,7 +8,8 @@ class Chatroom {
     constructor(room, username) {
         this.room = room;
         this.username = username;
-        this.chats = db.collection('chats')
+        this.chats = db.collection('chats');
+        this.unsub;
     }
     // ===> (1)
     async addChat(message) {
@@ -26,7 +27,8 @@ class Chatroom {
     }
     // ===> (2)
     getChats(callback) {
-        this.chats
+        // ====> (4)
+        this.unsub = this.chats
             // listen to documents with certain properties
             .where('room', '==', this.room)
             // order documents
@@ -40,6 +42,19 @@ class Chatroom {
                 })
             });
     }
+    // ===> (3)
+    updateName(username) {
+        this.username = username;
+    }
+    // ===> (4)
+    updateRoom(room) {
+        this.room = room;
+        console.log('room updated')
+        if (this.unsub) {
+            this.unsub()
+        }
+        this.unsub()
+    }
 }
 
 const chatroom = new Chatroom('general', 'olivia');
@@ -48,3 +63,13 @@ const chatroom = new Chatroom('general', 'olivia');
 chatroom.getChats((data) => {
     console.log(data)
 })
+
+// ===> (4)
+setTimeout(() => {
+    chatroom.updateRoom('gaming')
+    chatroom.updateName('Jay')
+    chatroom.getChats((data) => {
+        console.log(data)
+    });
+    chatroom.addChat('hello')
+}, 3000)
