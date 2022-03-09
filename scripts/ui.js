@@ -5,6 +5,9 @@ class ChatUI {
     constructor(list) {
         this.list = list;
     }
+    clear() {
+        this.list.innerHTML = ''
+    }
     // ===> (1)
     render(data) {
         const when = dateFns.distanceInWordsToNow(
